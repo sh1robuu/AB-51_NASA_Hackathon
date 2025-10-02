@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth Saver - Quiz Game</title>
+    <link rel="stylesheet" href="../assets/css/pixel-styles.css">
+    <link rel="stylesheet" href="../assets/css/game-styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="pixel-nav">
+        <ul class="pixel-nav-list">
+            <li class="pixel-nav-item"><a href="homepage.html" class="pixel-nav-link">🏠 Dashboard</a></li>
+            <li class="pixel-nav-item"><a href="game.html" class="pixel-nav-link active">🎮 Play Game</a></li>
+            <li class="pixel-nav-item"><a href="#" class="pixel-nav-link" onclick="showProfile()">👤 Profile</a></li>
+            <li class="pixel-nav-item"><a href="#" class="pixel-nav-link" onclick="logout()">🚪 Logout</a></li>
+        </ul>
+    </nav>
+
+    <div id="game-container" class="pixel-container">
+        <header class="game-header">
+            <h1>🌍 Earth Saver</h1>
+            <p class="tagline">Answer questions to save our planet!</p>
+        </header>
+
+        <!-- Earth Health Meter -->
+        <div class="earth-health-container">
+            <div class="earth-visual">
+                <div id="earth-sphere" class="earth-sphere healthy">
+                    <div class="continent continent-1"></div>
+                    <div class="continent continent-2"></div>
+                    <div class="continent continent-3"></div>
+                </div>
+            </div>
+            <div class="health-meter">
+                <label>Earth Health:</label>
+                <div class="health-bar">
+                    <div id="health-fill" class="health-fill"></div>
+                </div>
+                <span id="health-percentage">100%</span>
+            </div>
+        </div>
+
+        <!-- Game Stats -->
+        <div class="game-stats">
+            <div class="stat">
+                <span class="stat-label">Score:</span>
+                <span id="score" class="stat-value">0</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Question:</span>
+                <span id="question-number" class="stat-value">1</span>
+                <span class="stat-value">of</span>
+                <span id="total-questions" class="stat-value">10</span>
+            </div>
+            <div class="stat">
+                <span class="stat-label">Streak:</span>
+                <span id="streak" class="stat-value">0</span>
+            </div>
+        </div>
+
+        <!-- Question Container -->
+        <div id="question-container" class="question-container">
+            <div class="question-card">
+                <h2 id="question-text" class="question-text">
+                    Loading your first question...
+                </h2>
+                <div id="answers-container" class="answers-container">
+                    <!-- Answer buttons will be generated here -->
+                </div>
+                <div id="explanation" class="explanation hidden">
+                    <!-- Explanation will appear here after answering -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button id="next-question" class="btn btn-primary hidden">Next Question</button>
+            <button id="restart-game" class="btn btn-secondary hidden">Play Again</button>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over" class="game-over-screen hidden">
+            <div class="game-over-content">
+                <h2 id="final-message">Game Complete!</h2>
+                <div class="final-stats">
+                    <p>Final Score: <span id="final-score">0</span></p>
+                    <p>Earth Health: <span id="final-health">100%</span></p>
+                    <p>Questions Correct: <span id="correct-answers">0</span> / <span id="total-answered">10</span></p>
+                </div>
+                <div id="earth-status" class="earth-status">
+                    <div id="earth-message" class="earth-message"></div>
+                </div>
+                <button id="play-again" class="btn btn-primary">Save Earth Again!</button>
+            </div>
+        </div>
+
+        <!-- Loading Screen -->
+        <div id="loading" class="loading-screen">
+            <div class="loading-content">
+                <div class="earth-loader">
+                    <div class="rotating-earth">🌍</div>
+                </div>
+                <p>Preparing questions to save Earth...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Effects (optional) -->
+    <audio id="correct-sound" preload="auto">
+        <!-- Add sound files if desired -->
+    </audio>
+    <audio id="wrong-sound" preload="auto">
+        <!-- Add sound files if desired -->
+    </audio>
+
+    <script src="../scripts/auth.js"></script>
+    <script src="../scripts/questions.js"></script>
+    <script src="../scripts/script.js"></script>
+</body>
+</html>

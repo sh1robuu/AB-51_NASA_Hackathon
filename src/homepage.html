@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earth Saver - Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/pixel-styles.css">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .user-header {
+            background: var(--pixel-dark-gray);
+            border: 4px solid var(--pixel-black);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .user-info h2 {
+            color: var(--pixel-earth-green);
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .user-level {
+            background: var(--pixel-earth-blue);
+            color: white;
+            padding: 8px 16px;
+            border: 2px solid var(--pixel-black);
+            display: inline-block;
+            font-weight: bold;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--pixel-white);
+            color: var(--pixel-text-dark);
+            border: 4px solid var(--pixel-black);
+            box-shadow: 4px 4px 0 var(--pixel-black);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            right: 4px;
+            bottom: 4px;
+            border: 2px solid var(--pixel-light-gray);
+        }
+
+        .stat-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--pixel-earth-green);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--pixel-gray);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .game-section {
+            background: var(--pixel-white);
+            color: var(--pixel-text-dark);
+            border: 4px solid var(--pixel-black);
+            box-shadow: 6px 6px 0 var(--pixel-black);
+            padding: 30px;
+        }
+
+        .play-button {
+            background: var(--pixel-earth-green);
+            color: white;
+            border: 4px solid var(--pixel-black);
+            box-shadow: 6px 6px 0 var(--pixel-black);
+            padding: 20px 40px;
+            font-family: var(--pixel-font-family);
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 20px 0;
+            transition: none;
+        }
+
+        .play-button:hover {
+            background: var(--pixel-healthy-green);
+            transform: translate(2px, 2px);
+            box-shadow: 4px 4px 0 var(--pixel-black);
+        }
+
+        .play-button:active {
+            transform: translate(6px, 6px);
+            box-shadow: none;
+        }
+
+        .achievements-section {
+            background: var(--pixel-black);
+            color: var(--pixel-white);
+            border: 4px solid var(--pixel-gray);
+            padding: 20px;
+        }
+
+        .achievements-grid {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .achievement {
+            background: var(--pixel-dark-gray);
+            border: 2px solid var(--pixel-gray);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .achievement.unlocked {
+            background: var(--pixel-earth-green);
+            border-color: var(--pixel-healthy-green);
+        }
+
+        .achievement-icon {
+            font-size: 20px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .achievement-info h4 {
+            margin: 0 0 5px 0;
+            font-size: 14px;
+        }
+
+        .achievement-info p {
+            margin: 0;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .leaderboard-section {
+            background: var(--pixel-white);
+            color: var(--pixel-text-dark);
+            border: 4px solid var(--pixel-black);
+            box-shadow: 6px 6px 0 var(--pixel-black);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .leaderboard-list {
+            margin-top: 15px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 2px solid var(--pixel-light-gray);
+            background: var(--pixel-light-gray);
+            margin-bottom: 5px;
+        }
+
+        .leaderboard-item.current-user {
+            background: var(--pixel-earth-green);
+            color: white;
+            font-weight: bold;
+        }
+
+        .leaderboard-rank {
+            font-weight: bold;
+            width: 30px;
+        }
+
+        .leaderboard-name {
+            flex: 1;
+            text-align: left;
+        }
+
+        .leaderboard-score {
+            font-weight: bold;
+            color: var(--pixel-earth-blue);
+        }
+
+        .leaderboard-item.current-user .leaderboard-score {
+            color: white;
+        }
+
+        .recent-games {
+            background: var(--pixel-white);
+            color: var(--pixel-text-dark);
+            border: 4px solid var(--pixel-black);
+            box-shadow: 6px 6px 0 var(--pixel-black);
+            padding: 20px;
+        }
+
+        .game-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: var(--pixel-light-gray);
+            margin-bottom: 10px;
+            border: 2px solid var(--pixel-gray);
+        }
+
+        .earth-status {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--pixel-black);
+            position: relative;
+            background: var(--pixel-earth-blue);
+        }
+
+        .earth-status.saved {
+            background: var(--pixel-healthy-green);
+        }
+
+        .earth-status.warning {
+            background: var(--pixel-warning-yellow);
+        }
+
+        .earth-status.critical {
+            background: var(--pixel-critical-red);
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .user-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-actions {
+                justify-content: center;
+            }
+
+            .quick-stats {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+
+            .play-button {
+                font-size: 18px;
+                padding: 15px 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dashboard-container {
+                padding: 10px;
+            }
+
+            .user-header {
+                padding: 15px;
+            }
+
+            .stat-card, .game-section, .achievements-section, .leaderboard-section {
+                padding: 15px;
+            }
+
+            .play-button {
+                font-size: 16px;
+                padding: 12px 24px;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="pixel-nav">
+        <ul class="pixel-nav-list">
+            <li class="pixel-nav-item"><a href="homepage.html" class="pixel-nav-link active">🏠 Dashboard</a></li>
+            <li class="pixel-nav-item"><a href="game.html" class="pixel-nav-link">🎮 Play Game</a></li>
+            <li class="pixel-nav-item"><a href="#" class="pixel-nav-link" onclick="showProfile()">👤 Profile</a></li>
+            <li class="pixel-nav-item"><a href="#" class="pixel-nav-link" onclick="logout()">🚪 Logout</a></li>
+        </ul>
+    </nav>
+
+    <div class="dashboard-container">
+        <!-- User Header -->
+        <div class="user-header">
+            <div class="user-info">
+                <h2 id="username">Loading...</h2>
+                <div class="user-level" id="userLevel">Level 1</div>
+                <div style="margin-top: 10px; color: var(--pixel-light-gray);">
+                    <span id="userExperience">0</span> XP
+                </div>
+            </div>
+            <div class="user-actions">
+                <button class="pixel-button" onclick="showProfile()">👤 Profile</button>
+                <button class="pixel-button secondary" onclick="showLeaderboard()">🏆 Leaderboard</button>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <span class="stat-icon">🎮</span>
+                <div class="stat-value" id="gamesPlayed">0</div>
+                <div class="stat-label">Games Played</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🏆</span>
+                <div class="stat-value" id="bestScore">0</div>
+                <div class="stat-label">Best Score</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🌍</span>
+                <div class="stat-value" id="earthSaved">0</div>
+                <div class="stat-label">Earths Saved</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-icon">🔥</span>
+                <div class="stat-value" id="bestStreak">0</div>
+                <div class="stat-label">Best Streak</div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="game-section">
+                <h2 class="pixel-subtitle">🌍 Ready to Save Earth?</h2>
+                <p class="pixel-text">Test your environmental knowledge and help save our planet! Answer questions about climate change, conservation, and sustainability.</p>
+                
+                <div class="pixel-earth healthy" style="margin: 20px auto; width: 100px; height: 100px;">
+                    <div style="position: absolute; top: 15px; left: 20px; width: 25px; height: 20px; background: var(--pixel-healthy-green); border: 1px solid var(--pixel-black);"></div>
+                    <div style="position: absolute; top: 50px; right: 18px; width: 20px; height: 15px; background: var(--pixel-healthy-green); border: 1px solid var(--pixel-black);"></div>
+                </div>
+
+                <div style="text-align: center;">
+                    <a href="game.html" class="play-button">🚀 Start New Game</a>
+                </div>
+
+                <p style="font-size: 14px; color: var(--pixel-gray); text-align: center; margin-top: 15px;">
+                    Each correct answer improves Earth's health!<br>
+                    Wrong answers damage our planet. Choose wisely!
+                </p>
+            </div>
+
+            <div class="achievements-section">
+                <h3 class="pixel-subtitle" style="color: white; margin-bottom: 15px;">🏅 Achievements</h3>
+                <div class="achievements-grid" id="achievementsList">
+                    <!-- Achievements will be loaded here -->
+                </div>
+                <div style="text-align: center; margin-top: 15px;">
+                    <button class="pixel-button secondary" onclick="showAllAchievements()">View All</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard -->
+        <div class="leaderboard-section">
+            <h2 class="pixel-subtitle">🏆 Top Eco-Warriors</h2>
+            <div class="leaderboard-list" id="leaderboardList">
+                <!-- Leaderboard will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Recent Games -->
+        <div class="recent-games">
+            <h2 class="pixel-subtitle">📊 Recent Games</h2>
+            <div id="recentGamesList">
+                <!-- Recent games will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div id="profileModal" class="pixel-modal" style="display: none;">
+        <div class="pixel-modal-content">
+            <h2 class="pixel-title" style="color: var(--pixel-text-dark);">User Profile</h2>
+            
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div class="pixel-earth healthy" style="width: 80px; height: 80px; margin: 0 auto 15px;">
+                    <div style="position: absolute; top: 12px; left: 16px; width: 20px; height: 15px; background: var(--pixel-healthy-green); border: 1px solid var(--pixel-black);"></div>
+                    <div style="position: absolute; top: 40px; right: 14px; width: 15px; height: 12px; background: var(--pixel-healthy-green); border: 1px solid var(--pixel-black);"></div>
+                </div>
+                <h3 id="profileUsername">Username</h3>
+                <div class="user-level" id="profileLevel">Level 1</div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                <div>
+                    <strong>Games Played:</strong> <span id="profileGamesPlayed">0</span>
+                </div>
+                <div>
+                    <strong>Total Score:</strong> <span id="profileTotalScore">0</span>
+                </div>
+                <div>
+                    <strong>Best Score:</strong> <span id="profileBestScore">0</span>
+                </div>
+                <div>
+                    <strong>Accuracy:</strong> <span id="profileAccuracy">0%</span>
+                </div>
+                <div>
+                    <strong>Best Streak:</strong> <span id="profileBestStreak">0</span>
+                </div>
+                <div>
+                    <strong>Earths Saved:</strong> <span id="profileEarthSaved">0</span>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <button class="pixel-button secondary" onclick="hideModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/auth.js"></script>
+    <script>
+        // Check authentication
+        if (!auth.isLoggedIn()) {
+            window.location.href = 'landing.html';
+        }
+
+        // Load user data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+            loadLeaderboard();
+            loadAchievements();
+            loadRecentGames();
+        });
+
+        function loadUserData() {
+            const user = auth.getCurrentUser();
+            if (!user) return;
+
+            document.getElementById('username').textContent = user.username;
+            document.getElementById('userLevel').textContent = `Level ${user.level}`;
+            document.getElementById('userExperience').textContent = user.experience;
+            
+            const stats = user.stats;
+            document.getElementById('gamesPlayed').textContent = stats.gamesPlayed;
+            document.getElementById('bestScore').textContent = stats.bestScore;
+            document.getElementById('earthSaved').textContent = stats.earthSaved;
+            document.getElementById('bestStreak').textContent = stats.bestStreak;
+        }
+
+        function loadLeaderboard() {
+            const leaderboard = auth.getLeaderboard();
+            const leaderboardList = document.getElementById('leaderboardList');
+            const currentUser = auth.getCurrentUser();
+            
+            if (leaderboard.length === 0) {
+                leaderboardList.innerHTML = '<p style="text-align: center; color: var(--pixel-gray); padding: 20px;">No games played yet. Be the first!</p>';
+                return;
+            }
+
+            leaderboardList.innerHTML = leaderboard.map((user, index) => {
+                const isCurrentUser = currentUser && user.username === currentUser.username;
+                return `
+                    <div class="leaderboard-item ${isCurrentUser ? 'current-user' : ''}">
+                        <span class="leaderboard-rank">#${index + 1}</span>
+                        <span class="leaderboard-name">${user.username}</span>
+                        <span class="leaderboard-score">${user.stats.bestScore}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadAchievements() {
+            const user = auth.getCurrentUser();
+            if (!user) return;
+
+            const achievementsList = document.getElementById('achievementsList');
+            const achievements = user.achievements;
+
+            // Sample achievements to show even if not unlocked
+            const allAchievements = [
+                { id: 'first_game', name: 'Eco Rookie', icon: '🌱', description: 'Play your first game' },
+                { id: 'perfect_score', name: 'Eco Expert', icon: '🏆', description: 'Get 100% correct answers' },
+                { id: 'earth_saver', name: 'Planet Protector', icon: '🌍', description: 'Save Earth with 90%+ health' },
+                { id: 'streak_5', name: 'Knowledge Streak', icon: '🔥', description: 'Get 5 answers correct in a row' },
+                { id: 'level_5', name: 'Eco Warrior', icon: '⚔️', description: 'Reach level 5' }
+            ];
+
+            achievementsList.innerHTML = allAchievements.slice(0, 3).map(achievement => {
+                const unlocked = achievements.find(a => a.id === achievement.id);
+                return `
+                    <div class="achievement ${unlocked ? 'unlocked' : ''}">
+                        <span class="achievement-icon">${achievement.icon}</span>
+                        <div class="achievement-info">
+                            <h4>${achievement.name}</h4>
+                            <p>${achievement.description}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function loadRecentGames() {
+            // This would load from a games history stored in localStorage
+            // For now, showing placeholder
+            const recentGamesDiv = document.getElementById('recentGamesList');
+            recentGamesDiv.innerHTML = '<p style="text-align: center; color: var(--pixel-gray); padding: 20px;">No recent games. <a href="game.html" style="color: var(--pixel-earth-blue);">Play your first game!</a></p>';
+        }
+
+        function showProfile() {
+            const user = auth.getCurrentUser();
+            if (!user) return;
+
+            document.getElementById('profileUsername').textContent = user.username;
+            document.getElementById('profileLevel').textContent = `Level ${user.level}`;
+            
+            const stats = user.stats;
+            document.getElementById('profileGamesPlayed').textContent = stats.gamesPlayed;
+            document.getElementById('profileTotalScore').textContent = stats.totalScore;
+            document.getElementById('profileBestScore').textContent = stats.bestScore;
+            
+            const accuracy = stats.questionsAnswered > 0 ? 
+                Math.round((stats.correctAnswers / stats.questionsAnswered) * 100) : 0;
+            document.getElementById('profileAccuracy').textContent = accuracy + '%';
+            
+            document.getElementById('profileBestStreak').textContent = stats.bestStreak;
+            document.getElementById('profileEarthSaved').textContent = stats.earthSaved;
+
+            document.getElementById('profileModal').style.display = 'flex';
+        }
+
+        function showLeaderboard() {
+            // Scroll to leaderboard section
+            document.querySelector('.leaderboard-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function showAllAchievements() {
+            // This would open a full achievements modal
+            alert('Full achievements view coming soon!');
+        }
+
+        function hideModal() {
+            document.getElementById('profileModal').style.display = 'none';
+        }
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                auth.logout();
+                window.location.href = 'landing.html';
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(event) {
+            const profileModal = document.getElementById('profileModal');
+            if (event.target === profileModal) {
+                hideModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                hideModal();
+            }
+        });
+    </script>
+</body>
+</html>
