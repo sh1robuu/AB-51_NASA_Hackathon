@@ -4,14 +4,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earth Saver - Save Our Planet!</title>
-    <link rel="stylesheet" href="../assets/css/pixel-styles.css">
     <style>
+        /* Pixel Art CSS Framework - Inline */
+        :root {
+            --pixel-earth-blue: #0066FF;
+            --pixel-earth-green: #00AA00;
+            --pixel-healthy-green: #22FF22;
+            --pixel-warning-yellow: #FFAA00;
+            --pixel-white: #FFFFFF;
+            --pixel-black: #000000;
+            --pixel-gray: #666666;
+            --pixel-light-gray: #CCCCCC;
+            --pixel-text-dark: #222222;
+            --pixel-font-family: 'Courier New', monospace;
+        }
         /* Global Layout */
         body {
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, var(--pixel-space-dark) 0%, var(--pixel-space-purple) 50%, var(--pixel-earth-blue) 100%);
+            background: linear-gradient(135deg, #000033 0%, #330066 50%, #0066FF 100%);
             min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Courier New', monospace;
+            color: #FFFFFF;
+        }
+        
+        /* Fallback styles */
+        * {
+            box-sizing: border-box;
+        }
+        
+        .pixel-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Modal Styles */
+        .pixel-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .pixel-modal-content {
+            background: #FFFFFF;
+            margin: 5% auto;
+            padding: 40px;
+            border: 6px solid #000000;
+            box-shadow: 12px 12px 0 #000000;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .pixel-form-group {
+            margin-bottom: 20px;
+        }
+
+        .pixel-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #222222;
+            font-family: 'Courier New', monospace;
+        }
+
+        .pixel-input {
+            width: 100%;
+            padding: 12px;
+            border: 4px solid #000000;
+            box-shadow: 4px 4px 0 #CCCCCC;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            background: #FFFFFF;
+        }
+
+        .pixel-input:focus {
+            outline: none;
+            border-color: #00AA00;
+            box-shadow: 4px 4px 0 #00AA00;
+        }
+
+        .pixel-button {
+            background: #00AA00;
+            color: #FFFFFF;
+            border: 4px solid #000000;
+            box-shadow: 6px 6px 0 #000000;
+            padding: 12px 24px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .pixel-button:hover {
+            background: #22FF22;
+            transform: translate(2px, 2px);
+            box-shadow: 4px 4px 0 #000000;
+        }
+
+        .pixel-button.secondary {
+            background: #666666;
+        }
+
+        .pixel-button.secondary:hover {
+            background: #888888;
+        }
+
+        /* Animated Background Elements */
+        .pixel-stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .pixel-star {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFFFFF;
+            box-shadow: 2px 2px 0 #000000;
+            animation: pixel-twinkle 3s ease-in-out infinite;
+        }
+
+        .pixel-star:nth-child(odd) {
+            animation-delay: -1.5s;
+        }
+
+        .pixel-star:nth-child(3n) {
+            animation-delay: -0.5s;
+        }
+
+        @keyframes pixel-twinkle {
+            0%, 100% { 
+                opacity: 0.3; 
+                transform: scale(1); 
+            }
+            50% { 
+                opacity: 1; 
+                transform: scale(1.2); 
+            }
+        }
+
+        .floating-pixels {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .floating-pixel {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #00AA00;
+            box-shadow: 2px 2px 0 #000000;
+            animation: float-up 8s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) rotate(360deg);
+            }
         }
 
         /* Navigation Header */
@@ -23,7 +205,7 @@
             z-index: 100;
             background: rgba(0, 0, 0, 0.9);
             backdrop-filter: blur(10px);
-            border-bottom: 4px solid var(--pixel-black);
+            border-bottom: 4px solid #000000;
             padding: 15px 0;
         }
 
@@ -43,22 +225,33 @@
         }
 
         .nav-logo-text {
-            font-family: var(--pixel-font-family);
+            font-family: 'Courier New', monospace;
             font-size: 24px;
             font-weight: bold;
-            color: var(--pixel-earth-green);
-            text-shadow: 2px 2px 0 var(--pixel-black);
+            color: #00AA00;
+            text-shadow: 2px 2px 0 #000000;
             text-transform: uppercase;
         }
 
         .nav-logo-icon {
             font-size: 32px;
-            animation: nav-earth-spin 4s linear infinite;
+            animation: nav-earth-bounce 2s ease-in-out infinite;
+            filter: drop-shadow(2px 2px 0 #000000);
         }
 
-        @keyframes nav-earth-spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @keyframes nav-earth-bounce {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg) scale(1); 
+            }
+            25% { 
+                transform: translateY(-3px) rotate(5deg) scale(1.05); 
+            }
+            50% { 
+                transform: translateY(-6px) rotate(0deg) scale(1.1); 
+            }
+            75% { 
+                transform: translateY(-3px) rotate(-5deg) scale(1.05); 
+            }
         }
 
         .nav-menu {
@@ -68,9 +261,9 @@
         }
 
         .nav-link {
-            color: var(--pixel-white);
+            color: #FFFFFF;
             text-decoration: none;
-            font-family: var(--pixel-font-family);
+            font-family: 'Courier New', monospace;
             font-weight: bold;
             text-transform: uppercase;
             font-size: 14px;
@@ -79,16 +272,16 @@
         }
 
         .nav-link:hover {
-            color: var(--pixel-earth-green);
+            color: #00AA00;
         }
 
         .nav-cta-btn {
-            background: var(--pixel-earth-green);
-            color: var(--pixel-white);
-            border: 3px solid var(--pixel-black);
-            box-shadow: 4px 4px 0 var(--pixel-black);
+            background: #00AA00;
+            color: #FFFFFF;
+            border: 3px solid #000000;
+            box-shadow: 4px 4px 0 #000000;
             padding: 10px 20px;
-            font-family: var(--pixel-font-family);
+            font-family: 'Courier New', monospace;
             font-weight: bold;
             text-transform: uppercase;
             text-decoration: none;
@@ -98,9 +291,9 @@
         }
 
         .nav-cta-btn:hover {
-            background: var(--pixel-healthy-green);
+            background: #22FF22;
             transform: translate(1px, 1px);
-            box-shadow: 3px 3px 0 var(--pixel-black);
+            box-shadow: 3px 3px 0 #000000;
         }
 
         /* Hero Section */
@@ -125,12 +318,12 @@
         .hero-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.15);
-            border: 2px solid var(--pixel-earth-green);
+            border: 2px solid #00AA00;
             border-radius: 20px;
             padding: 8px 20px;
             margin-bottom: 30px;
-            font-family: var(--pixel-font-family);
-            color: var(--pixel-white);
+            font-family: 'Courier New', monospace;
+            color: #FFFFFF;
             font-weight: bold;
             text-transform: uppercase;
             font-size: 12px;
@@ -139,20 +332,60 @@
 
         .hero-title {
             font-size: 64px;
-            color: var(--pixel-white);
-            text-shadow: 4px 4px 0 var(--pixel-black);
+            color: #FFFFFF;
+            text-shadow: 4px 4px 0 #000000;
             margin-bottom: 25px;
             text-transform: uppercase;
             letter-spacing: 4px;
             line-height: 1.1;
             font-weight: bold;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background: #00AA00;
+            box-shadow: 2px 2px 0 #000000;
+            animation: title-underline 2s ease-out 1s forwards;
+        }
+
+        @keyframes title-underline {
+            to { width: 100%; }
+        }
+
+        .hero-title .letter {
+            display: inline-block;
+            animation: letter-bounce 0.6s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes letter-bounce {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-10px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero-subtitle {
             font-size: 22px;
             color: rgba(255, 255, 255, 0.9);
             margin-bottom: 50px;
-            text-shadow: 2px 2px 0 var(--pixel-black);
+            text-shadow: 2px 2px 0 #000000;
             line-height: 1.5;
             max-width: 600px;
             margin-left: auto;
@@ -168,12 +401,12 @@
         }
 
         .hero-cta-primary {
-            background: var(--pixel-earth-green);
-            color: var(--pixel-white);
-            border: 4px solid var(--pixel-black);
-            box-shadow: 6px 6px 0 var(--pixel-black);
+            background: #00AA00;
+            color: #FFFFFF;
+            border: 4px solid #000000;
+            box-shadow: 6px 6px 0 #000000;
             padding: 18px 40px;
-            font-family: var(--pixel-font-family);
+            font-family: 'Courier New', monospace;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
@@ -182,21 +415,58 @@
             text-decoration: none;
             display: inline-block;
             transition: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-cta-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: button-shine 3s infinite;
         }
 
         .hero-cta-primary:hover {
-            background: var(--pixel-healthy-green);
+            background: #22FF22;
             transform: translate(2px, 2px);
-            box-shadow: 4px 4px 0 var(--pixel-black);
+            box-shadow: 4px 4px 0 #000000;
+            animation: button-pulse 0.3s ease-in-out;
+        }
+
+        .hero-cta-primary:active {
+            animation: button-glitch 0.2s ease-in-out;
+        }
+
+        @keyframes button-shine {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes button-pulse {
+            0% { transform: translate(2px, 2px) scale(1); }
+            50% { transform: translate(2px, 2px) scale(1.05); }
+            100% { transform: translate(2px, 2px) scale(1); }
+        }
+
+        @keyframes button-glitch {
+            0%, 100% { transform: translate(2px, 2px); }
+            25% { transform: translate(0px, 4px); }
+            50% { transform: translate(4px, 0px); }
+            75% { transform: translate(1px, 3px); }
         }
 
         .hero-cta-secondary {
             background: transparent;
-            color: var(--pixel-white);
-            border: 4px solid var(--pixel-white);
+            color: #FFFFFF;
+            border: 4px solid #FFFFFF;
             box-shadow: 6px 6px 0 rgba(255, 255, 255, 0.3);
             padding: 18px 40px;
-            font-family: var(--pixel-font-family);
+            font-family: 'Courier New', monospace;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
@@ -208,8 +478,8 @@
         }
 
         .hero-cta-secondary:hover {
-            background: var(--pixel-white);
-            color: var(--pixel-text-dark);
+            background: #FFFFFF;
+            color: #222222;
             transform: translate(2px, 2px);
             box-shadow: 4px 4px 0 rgba(255, 255, 255, 0.5);
         }
@@ -224,8 +494,9 @@
             background: var(--pixel-earth-blue);
             border: 6px solid var(--pixel-black);
             box-shadow: 12px 12px 0 var(--pixel-black);
-            animation: hero-earth-float 4s ease-in-out infinite;
+            animation: hero-earth-complex 6s ease-in-out infinite;
             z-index: 1;
+            position: relative;
         }
 
         .hero-earth::before {
@@ -237,6 +508,7 @@
             height: 60px;
             background: var(--pixel-healthy-green);
             border: 3px solid var(--pixel-black);
+            animation: continent-pulse 4s ease-in-out infinite;
         }
 
         .hero-earth::after {
@@ -248,11 +520,67 @@
             height: 50px;
             background: var(--pixel-healthy-green);
             border: 3px solid var(--pixel-black);
+            animation: continent-pulse 4s ease-in-out infinite 2s;
         }
 
-        @keyframes hero-earth-float {
-            0%, 100% { transform: translateY(-50%) rotate(0deg); }
-            50% { transform: translateY(-60%) rotate(2deg); }
+        .hero-earth-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            height: 400px;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            animation: orbit-rotate 20s linear infinite;
+        }
+
+        .satellite {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--pixel-warning-yellow);
+            box-shadow: 2px 2px 0 var(--pixel-black);
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: satellite-blink 2s ease-in-out infinite;
+        }
+
+        @keyframes hero-earth-complex {
+            0%, 100% { 
+                transform: translateY(-50%) rotate(0deg) scale(1);
+            }
+            25% { 
+                transform: translateY(-55%) rotate(1deg) scale(1.02);
+            }
+            50% { 
+                transform: translateY(-60%) rotate(2deg) scale(1.05);
+            }
+            75% { 
+                transform: translateY(-55%) rotate(1deg) scale(1.02);
+            }
+        }
+
+        @keyframes continent-pulse {
+            0%, 100% { 
+                background: var(--pixel-healthy-green);
+                transform: scale(1);
+            }
+            50% { 
+                background: var(--pixel-earth-green);
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes orbit-rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        @keyframes satellite-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         /* Features Section */
@@ -319,6 +647,20 @@
             text-align: left;
             position: relative;
             transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(0, 255, 0, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
         }
 
         .feature-card:hover {
@@ -326,19 +668,58 @@
             box-shadow: 12px 20px 0 var(--pixel-light-gray);
         }
 
+        .feature-card:hover::before {
+            opacity: 1;
+            animation: card-scan 1s ease-in-out;
+        }
+
+        .feature-card:hover .feature-icon {
+            animation: icon-bounce 0.6s ease-in-out;
+        }
+
         .feature-icon {
             font-size: 48px;
             margin-bottom: 25px;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background: var(--pixel-earth-green);
             color: var(--pixel-white);
             width: 80px;
             height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border: 4px solid var(--pixel-black);
-            margin-bottom: 25px;
+            position: relative;
+            box-shadow: 4px 4px 0 var(--pixel-black);
+        }
+
+        .feature-icon::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: var(--pixel-warning-yellow);
+            z-index: -1;
+            opacity: 0;
+            animation: icon-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes card-scan {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        @keyframes icon-bounce {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            50% { transform: scale(1.2) rotate(0deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        @keyframes icon-glow {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.3; }
         }
 
         .feature-title {
@@ -402,6 +783,7 @@
             text-align: center;
             position: relative;
             backdrop-filter: blur(10px);
+            overflow: hidden;
         }
 
         .stat-card::before {
@@ -413,6 +795,19 @@
             bottom: -2px;
             background: linear-gradient(45deg, var(--pixel-earth-green), var(--pixel-healthy-green));
             z-index: -1;
+            animation: border-pulse 3s ease-in-out infinite;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 8px;
+            height: 8px;
+            background: var(--pixel-warning-yellow);
+            box-shadow: 2px 2px 0 var(--pixel-black);
+            animation: corner-blink 2s ease-in-out infinite;
         }
 
         .stat-number {
@@ -422,6 +817,32 @@
             display: block;
             margin-bottom: 15px;
             text-shadow: 2px 2px 0 var(--pixel-black);
+            position: relative;
+        }
+
+        .stat-number.animate {
+            animation: number-glitch 0.1s ease-in-out;
+        }
+
+        @keyframes border-pulse {
+            0%, 100% { 
+                background: linear-gradient(45deg, var(--pixel-earth-green), var(--pixel-healthy-green));
+            }
+            50% { 
+                background: linear-gradient(45deg, var(--pixel-healthy-green), var(--pixel-warning-yellow));
+            }
+        }
+
+        @keyframes corner-blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @keyframes number-glitch {
+            0%, 100% { transform: translate(0); }
+            25% { transform: translate(-1px, 1px); }
+            50% { transform: translate(1px, -1px); }
+            75% { transform: translate(-1px, -1px); }
         }
 
         .stat-label {
@@ -629,6 +1050,10 @@
     </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="pixel-stars"></div>
+    <div class="floating-pixels"></div>
+    
     <!-- Navigation Header -->
     <header class="nav-header">
         <div class="nav-container">
@@ -669,7 +1094,11 @@
             </div>
         </div>
         
-        <div class="hero-earth"></div>
+        <div class="hero-earth">
+            <div class="hero-earth-orbit">
+                <div class="satellite"></div>
+            </div>
+        </div>
     </section>
 
     <!-- Features Section -->
@@ -942,19 +1371,266 @@
         }, observerOptions);
 
         // Apply initial styles and observe feature cards
-        document.addEventListener('DOMContentLoaded', () => {
-            const featureCards = document.querySelectorAll('.feature-card');
-            featureCards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(30px)';
-                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
-                featuresObserver.observe(card);
-            });
+        // Create animated background stars - SIMPLIFIED
+        function createStars() {
+            try {
+                const starsContainer = document.querySelector('.pixel-stars');
+                if (!starsContainer) return;
+                
+                const numberOfStars = 20; // Reduced number
+                
+                for (let i = 0; i < numberOfStars; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'pixel-star';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.animationDelay = Math.random() * 3 + 's';
+                    starsContainer.appendChild(star);
+                }
+            } catch (error) {
+                console.error('Stars creation error:', error);
+            }
+        }
+
+        // Create floating particles
+        function createFloatingPixels() {
+            const pixelsContainer = document.querySelector('.floating-pixels');
             
-            // Observe stats section for animation
-            const statsSection = document.querySelector('.stats-section');
-            observer.observe(statsSection);
+            setInterval(() => {
+                if (pixelsContainer.children.length < 10) {
+                    const pixel = document.createElement('div');
+                    pixel.className = 'floating-pixel';
+                    pixel.style.left = Math.random() * 100 + '%';
+                    pixel.style.animationDelay = Math.random() * 2 + 's';
+                    
+                    // Random colors for variety
+                    const colors = ['var(--pixel-earth-green)', 'var(--pixel-warning-yellow)', 'var(--pixel-earth-blue)'];
+                    pixel.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    pixelsContainer.appendChild(pixel);
+                    
+                    // Remove pixel after animation
+                    setTimeout(() => {
+                        if (pixel.parentNode) {
+                            pixel.parentNode.removeChild(pixel);
+                        }
+                    }, 8000);
+                }
+            }, 500);
+        }
+
+        // Animate hero title letters
+        function animateTitle() {
+            const title = document.querySelector('.hero-title');
+            const text = title.textContent;
+            title.innerHTML = '';
+            
+            [...text].forEach((letter, index) => {
+                const span = document.createElement('span');
+                span.className = 'letter';
+                span.textContent = letter === ' ' ? '\u00A0' : letter;
+                span.style.animationDelay = index * 0.1 + 's';
+                title.appendChild(span);
+            });
+        }
+
+        // Enhanced stats animation with glitch effect
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const text = stat.textContent;
+                if (text.includes('+')) {
+                    const num = parseInt(text);
+                    let current = 0;
+                    const increment = num / 50;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= num) {
+                            stat.textContent = num + '+';
+                            clearInterval(timer);
+                            // Add glitch effect at the end
+                            stat.classList.add('animate');
+                            setTimeout(() => stat.classList.remove('animate'), 100);
+                        } else {
+                            stat.textContent = Math.floor(current) + '+';
+                        }
+                    }, 50);
+                } else if (text.includes('%')) {
+                    const num = parseInt(text);
+                    let current = 0;
+                    const increment = num / 30;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= num) {
+                            stat.textContent = num + '%';
+                            clearInterval(timer);
+                            stat.classList.add('animate');
+                            setTimeout(() => stat.classList.remove('animate'), 100);
+                        } else {
+                            stat.textContent = Math.floor(current) + '%';
+                        }
+                    }, 80);
+                }
+            });
+        }
+
+        // Add button click effects
+        function addButtonEffects() {
+            const buttons = document.querySelectorAll('.hero-cta-primary, .hero-cta-secondary, .cta-button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    // Create click particle effect
+                    const particles = document.createElement('div');
+                    particles.style.position = 'absolute';
+                    particles.style.left = e.clientX + 'px';
+                    particles.style.top = e.clientY + 'px';
+                    particles.style.pointerEvents = 'none';
+                    particles.style.zIndex = '1000';
+                    
+                    for (let i = 0; i < 6; i++) {
+                        const particle = document.createElement('div');
+                        particle.style.position = 'absolute';
+                        particle.style.width = '4px';
+                        particle.style.height = '4px';
+                        particle.style.background = 'var(--pixel-warning-yellow)';
+                        particle.style.boxShadow = '2px 2px 0 var(--pixel-black)';
+                        particle.style.animation = `particle-burst 0.6s ease-out forwards`;
+                        particle.style.transform = `rotate(${i * 60}deg) translateX(20px)`;
+                        particles.appendChild(particle);
+                    }
+                    
+                    document.body.appendChild(particles);
+                    setTimeout(() => document.body.removeChild(particles), 600);
+                });
+            });
+        }
+
+        // Add particle burst animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes particle-burst {
+                0% { 
+                    opacity: 1; 
+                    transform: rotate(var(--rotation, 0deg)) translateX(0); 
+                }
+                100% { 
+                    opacity: 0; 
+                    transform: rotate(var(--rotation, 0deg)) translateX(40px); 
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Simple stats animation function
+        function animateStats() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const text = stat.textContent;
+                if (text.includes('+')) {
+                    const num = parseInt(text);
+                    let current = 0;
+                    const increment = num / 30;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= num) {
+                            stat.textContent = num + '+';
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(current) + '+';
+                        }
+                    }, 50);
+                } else if (text.includes('%')) {
+                    const num = parseInt(text);
+                    let current = 0;
+                    const increment = num / 20;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= num) {
+                            stat.textContent = num + '%';
+                            clearInterval(timer);
+                        } else {
+                            stat.textContent = Math.floor(current) + '%';
+                        }
+                    }, 80);
+                }
+            });
+        }
+
+        // Initialize page when loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Earth Saver landing page loaded!');
+            
+            try {
+                // Make sure all elements are visible
+                const featureCards = document.querySelectorAll('.feature-card');
+                featureCards.forEach((card) => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                });
+                
+                // Set up stats animation observer
+                const statsSection = document.querySelector('.stats-section');
+                if (statsSection) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                animateStats();
+                                observer.unobserve(entry.target);
+                            }
+                        });
+                    });
+                    observer.observe(statsSection);
+                }
+                
+                console.log('Basic initialization complete');
+            } catch (error) {
+                console.error('Initialization error:', error);
+            }
         });
+
+        // Modal functions
+        function showLogin() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function showRegister() {
+            document.getElementById('registerModal').style.display = 'block';
+        }
+
+        function hideModal() {
+            document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('registerModal').style.display = 'none';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (username && password) {
+                alert('Login successful! Redirecting to homepage...');
+                window.location.href = 'homepage.html';
+            }
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (username && email && password) {
+                alert('Registration successful! You can now login.');
+                hideModal();
+                showLogin();
+            }
+        }
     </script>
 </body>
 </html>
